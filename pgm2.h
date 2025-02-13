@@ -1,0 +1,26 @@
+#pragma once
+#ifndef PGM2_H
+#define PGM2_H
+#include <iostream>
+#include <string>
+#include <vector>
+
+struct Word {
+	std::string aWord;
+	int wCount;
+	Word() { aWord = std::string::npos; wCount = 0; };
+	bool operator==(const std::string& str) { return aWord == str; };
+
+};
+
+void checkfiles(std::ifstream& x, std::ifstream& y);
+
+std::vector<Word> fillMew(std::vector<Word>& mewWords, std::ifstream& mew);
+
+std::vector<Word> fillCanterbury(std::vector<Word>& canterburyWords, std::ifstream& canterbury, int totalWords);
+
+void removePuncs(std::vector<Word>& inputVec);
+
+void fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec);
+
+#endif // PGM2_H
