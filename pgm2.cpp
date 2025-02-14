@@ -68,7 +68,7 @@ void removePuncs(std::vector<Word>& inputVec) {
 	
 // im going to have binary search return -1 if false, or the value if true. 
 
-int binarySearch(const std::vector<Word>& arr, const std::string& target, int low, int high) {
+int binarySearch(std::vector<Word> &arr, const std::string& target, int low, int high) {
 	if (low <= high) {
 		int mid = low + (high - low) / 2;
 
@@ -89,17 +89,33 @@ int binarySearch(const std::vector<Word>& arr, const std::string& target, int lo
 
 
 
-void fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec) {
-	for (int i = 0; i < canterBuryVec.size(); ++i) {
-		if (binarySearch(mewVec, canterBuryVec[i++].aWord, 0, mewVec.size() - 1) != -1) {
-			
-			std::string temp = canterBuryVec[i].aWord;
-			middleVec.
+std::vector<Word> fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec) {
+	
+	// Sort the mewVec vector. for some reason I have to sort this vector twice? I dont know
+	std::sort(mewVec.begin(), mewVec.end(), [](const Word& a, const Word& b) {
+		return a.aWord < b.aWord;
+		});
 
+	int middleIndex = -1; // set to -1 to not get out of bounds
+	for (int i = 0; i < canterBuryVec.size(); ++i) {
+		if (binarySearch(mewVec, canterBuryVec[i].aWord, 0, mewVec.size() - 1) != -1) {
+			middleIndex++;
+			std::string temp = canterBuryVec[i].aWord;
+			middleVec.resize(middleVec.size() + 1); // resize the vector to accommodate the new word
+			middleVec[middleIndex].aWord = temp;
 		}
 		else {
-	
 			continue;
 		}
 	}
+	return middleVec;
+}
+
+void printResults(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec)
+{
+	std::cout << "Count of all words used in Canterbury Tales: " << canterBuryVec.size() << "\n\n";
+	std::cout << "Distinct Middle English Words = " << middleVec.size() << std::endl;
+	std::cout << "Distinct Modern English Words = " << canterBuryVec.size() - middleVec.size() << std::endl;
+	// have to sort by count for the rest of this shit
+	
 }

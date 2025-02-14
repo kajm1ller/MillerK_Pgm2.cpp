@@ -6,6 +6,8 @@
 #include <sstream> // seems too easy to be allowed
 #include "pgm2.h"
 
+const int MEW_WORD_MAX = 21541; // just see how many lines are in the text file
+
 // dont really know where else to put this 
 bool compareByCount(const Word& a, const Word& b)
 {
@@ -16,7 +18,6 @@ bool compareStringLength(const Word& a, const Word& b) {
 	return a.aWord.length() < b.aWord.length();
 }
 
-const int MEW_WORD_MAX = 21541; // just see how many lines are in the text file
 
 // So you dont forget tomorrow 
 // el progama de "stl sort" es muy jodido
@@ -56,9 +57,9 @@ int main() {
 	std::sort(mewWords.begin(), mewWords.end(), compareStringLength);
 	std::sort(canterburyWords.begin(), canterburyWords.end(), compareStringLength);
 	
-	fillMid(canterburyWords, mewWords, midEnglishWords);
+	midEnglishWords = fillMid(canterburyWords, mewWords, midEnglishWords);
 	
-	std::cout << midEnglishWords[0].aWord;
+	std::cout << midEnglishWords.size() << std::endl;
 
 	return 0;
 }

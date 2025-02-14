@@ -21,6 +21,8 @@ std::vector<Word> fillCanterbury(std::vector<Word>& canterburyWords, std::ifstre
 
 void removePuncs(std::vector<Word>& inputVec);
 
-void fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec);
+std::vector<Word> fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec);
+
+void printResults(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec);
 
 #endif // PGM2_H
