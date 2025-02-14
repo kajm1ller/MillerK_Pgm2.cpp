@@ -55,13 +55,10 @@ int main() {
 	// sort by length of string, compareStringLength is a pointer to the function
 	std::sort(mewWords.begin(), mewWords.end(), compareStringLength);
 	std::sort(canterburyWords.begin(), canterburyWords.end(), compareStringLength);
-	for (int i = 0; i < canterburyWords.size(); i++) {
-		std::cout << canterburyWords[i].aWord << std::endl;
-	}
+	
 	fillMid(canterburyWords, mewWords, midEnglishWords);
 	
-
-	
+	std::cout << midEnglishWords[0].aWord;
 
 	return 0;
 }

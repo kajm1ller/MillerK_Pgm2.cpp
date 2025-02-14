@@ -89,13 +89,16 @@ int binarySearch(const std::vector<Word>& arr, const std::string& target, int lo
 
 
 
-void fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec, int midEnglishCount) {
+void fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec) {
 	for (int i = 0; i < canterBuryVec.size(); ++i) {
-		if (binarySearch(mewVec, canterBuryVec[i].aWord, 0, mewVec.size() - 1) != -1) {
-			middleVec.push_back(canterBuryVec[i]);
+		if (binarySearch(mewVec, canterBuryVec[i++].aWord, 0, mewVec.size() - 1) != -1) {
+			
+			std::string temp = canterBuryVec[i].aWord;
+			middleVec.
+
 		}
 		else {
-			midEnglishCount++;
+	
 			continue;
 		}
 	}
