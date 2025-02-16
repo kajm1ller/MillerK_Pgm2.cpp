@@ -21,8 +21,20 @@ std::vector<Word> fillCanterbury(std::vector<Word>& canterburyWords, std::ifstre
 
 void removePuncs(std::vector<Word>& inputVec);
 
-std::vector<Word> fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec);
+std::vector<Word> fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec, std::vector<Word> distinctCanterBury);
 
-void printResults(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec);
+void printResults(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec, std::vector<Word> DistinctCanterbury);
+
+std::vector<Word>  getCount(std::vector<Word> inputVec);
+
+int moreThanfive(std::vector<Word> inputVec);
+
+std::vector<Word> fillDistinct(std::vector<Word> canterBuryVec, std::vector<Word> middleVec, std::vector<Word> DistinctCanterbury);
+
+std::vector<Word> removeDupes(std::vector<Word> inputVec);
+
+bool compareStringLength(const Word& a, const Word& b);
+
+bool compareByCount(const Word& a, const Word& b);
 
 #endif // PGM2_H

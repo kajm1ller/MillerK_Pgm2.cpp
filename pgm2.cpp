@@ -7,6 +7,7 @@
 #include <vector>
 #include <iomanip>
 #include <cctype>
+#include <unordered_map>
 
 
 void checkfiles(std::ifstream& x, std::ifstream& y) {
@@ -73,7 +74,7 @@ int binarySearch(std::vector<Word> &arr, const std::string& target, int low, int
 		int mid = low + (high - low) / 2;
 
 		if (arr[mid].aWord == target) {
-			// as of right now we are literally never returning mid. Something is wrong
+			
 			return mid;
 		}
 		else if (arr[mid].aWord < target) {
@@ -86,36 +87,118 @@ int binarySearch(std::vector<Word> &arr, const std::string& target, int low, int
 	return -1;
 }
 
+std::vector<Word> getCount(std::vector<Word> inputVec) {
+	std::unordered_map<std::string, int> wordCountMap;
+	for (const auto& word : inputVec) {
+		wordCountMap[word.aWord]++;
+	}
+	for (auto& word : inputVec) {
+		word.wCount = wordCountMap[word.aWord];
+	}
+	return inputVec;
+}
 
 
-
-std::vector<Word> fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec) {
-	
-	// Sort the mewVec vector. for some reason I have to sort this vector twice? I dont know
+std::vector<Word> fillMid(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec, std::vector<Word> distinctCanterBury) {
+	// Sort the mewVec vector
 	std::sort(mewVec.begin(), mewVec.end(), [](const Word& a, const Word& b) {
 		return a.aWord < b.aWord;
-		});
+	});
 
-	int middleIndex = -1; // set to -1 to not get out of bounds
+	// Remove duplicates from mewVec
+	mewVec = removeDupes(mewVec);
+
+	for (const auto& word : canterBuryVec) {
+		if (binarySearch(mewVec, word.aWord, 0, static_cast<int>(mewVec.size()) - 1) == -1) {
+			std::string temp = word.aWord;
+			middleVec.resize(middleVec.size() + 1);
+			middleVec[middleVec.size() - 1].aWord = temp;
+		}
+	}
+	return middleVec;
+}
+	
+
+std::vector<Word> fillDistinct(std::vector<Word> canterBuryVec, std::vector<Word> middleVec, std::vector<Word> DistinctCanterbury) {
+	
+	int distinctIndex = -1;
 	for (int i = 0; i < canterBuryVec.size(); ++i) {
-		if (binarySearch(mewVec, canterBuryVec[i].aWord, 0, mewVec.size() - 1) != -1) {
-			middleIndex++;
-			std::string temp = canterBuryVec[i].aWord;
-			middleVec.resize(middleVec.size() + 1); // resize the vector to accommodate the new word
-			middleVec[middleIndex].aWord = temp;
+		std::string temp = canterBuryVec[i].aWord;
+		if (binarySearch(middleVec, canterBuryVec[i].aWord, 0, middleVec.size() - 1) == -1) {
+			distinctIndex++;
+			DistinctCanterbury.resize(DistinctCanterbury.size() + 1);
+			DistinctCanterbury[distinctIndex].aWord = temp;
 		}
 		else {
 			continue;
 		}
 	}
-	return middleVec;
+	return DistinctCanterbury;
+
 }
 
-void printResults(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec)
+
+int moreThanfive(std::vector<Word> inputVec) {
+	int count = 0;
+
+	for (int i = 0; i < inputVec.size(); ++i) {
+		if (inputVec[i].aWord.length() >= 5) {
+			count++;
+		}
+	}
+	return count;
+}
+
+void printResults(std::vector<Word> canterBuryVec, std::vector<Word> mewVec, std::vector<Word> middleVec, std::vector<Word> DistinctCanterbury)
 {
 	std::cout << "Count of all words used in Canterbury Tales: " << canterBuryVec.size() << "\n\n";
-	std::cout << "Distinct Middle English Words = " << middleVec.size() << std::endl;
-	std::cout << "Distinct Modern English Words = " << canterBuryVec.size() - middleVec.size() << std::endl;
-	// have to sort by count for the rest of this shit
-	
+	std::cout << "Distinct Middle English Words = " << middleVec.size() << "\n\n";
+	std::cout << "Distinct Modern English Words = " << canterBuryVec.size() - middleVec.size() << "\n\n";
+	int ModernmoreThanFive = moreThanfive(DistinctCanterbury);
+	int MiddlemoreThanFive = moreThanfive(middleVec);
+	std::cout << "Count of Modern English Words (>=5 Letters): " << ModernmoreThanFive << "\n\n";
+	std::cout << "Count of Middle English Words (>=5 Letters): " << MiddlemoreThanFive << "\n\n";
+
+	canterBuryVec = removeDupes(canterBuryVec);
+	middleVec = removeDupes(middleVec);
+	DistinctCanterbury = removeDupes(DistinctCanterbury);
+	std::sort(canterBuryVec.begin(), canterBuryVec.end(), compareByCount);
+	std::sort(middleVec.begin(), middleVec.end(), compareByCount);
+	std::sort(DistinctCanterbury.begin(), DistinctCanterbury.end(), compareByCount);
+	std::reverse(middleVec.begin(), middleVec.end());
+	std::reverse(canterBuryVec.begin(),canterBuryVec.end());
+	std::reverse(DistinctCanterbury.begin(), DistinctCanterbury.end());
+
+	std::cout << "Freq of Modern English Words" << std::endl;
+	std::cout << "Word" << std::setw(20) << "Frequency" << std::endl;
+	for (int i = 0; i < 5; ++i) {
+		std::cout << DistinctCanterbury[i].aWord << std::setw(20) << DistinctCanterbury[i].wCount << std::endl;
+		
+	}
+	std::cout << std::endl;
+	std::cout << "Freq of Middle English Words" << std::endl;
+	std::cout << "Word" << std::setw(20) << "Frequency" << std::endl;
+	for (int i = 0; i < 5; ++i) {
+		std::cout << middleVec[i].aWord << std::setw(20) << middleVec[i].wCount << std::endl;
+	}
+
+}
+
+std::vector<Word> removeDupes(std::vector<Word> inputVec) {
+	std::sort(inputVec.begin(), inputVec.end(), [](const Word& a, const Word& b) {
+		return a.aWord < b.aWord;
+		});
+	inputVec.erase(std::unique(inputVec.begin(), inputVec.end(), [](const Word& a, const Word& b) {
+		return a.aWord == b.aWord;
+		}), inputVec.end());
+	return inputVec;
+}
+
+bool compareByCount(const Word& a, const Word& b)
+{
+	return a.wCount < b.wCount;
+}
+
+bool compareStringLength(const Word& a, const Word& b) {
+	return a.aWord.length() < b.aWord.length();
 }
